@@ -1,0 +1,6 @@
+# robots.txt for Sayandeep Purkait Portfolio
+User-agent: *
+Allow: /
+Disallow: /404
+
+Sitemap: https://contactsayandeep.xyz/sitemap.xml
