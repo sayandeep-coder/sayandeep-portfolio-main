@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 Disallow: /404
 
-Sitemap: https://contactsayandeep.xyz/sitemap.xml
+Sitemap: https://www.sayandeep.site/sitemap.xml

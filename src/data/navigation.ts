@@ -19,5 +19,5 @@ export const CONTACT_INFO = {
   github: 'https://github.com/sayandeep-coder',
   linkedin: 'https://www.linkedin.com/in/sayandeeppurkait/',
   agentforgeRepo: 'https://github.com/sayandeep-coder/agentforge',
-  siteUrl: 'https://contactsayandeep.xyz',
+  siteUrl: 'https://www.sayandeep.site',
 };
