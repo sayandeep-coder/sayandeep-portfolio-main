@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
-import { PageProgress } from './components/layout/PageProgress';
 import { HomePage } from './pages/HomePage';
 import { CaseStudyRoute } from './pages/CaseStudyRoute';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -12,7 +11,6 @@ export function App() {
 
   return (
     <>
-      <PageProgress />
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
       <Routes>
         <Route path="/" element={<HomePage />} />

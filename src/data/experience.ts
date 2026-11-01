@@ -24,7 +24,7 @@ export const GANTT_DATA: GanttItem[] = [
     company: 'Secondz',
     leftPercent: 94.12,
     widthPercent: 5.88,
-    label: 'Oct 2026 — Present',
+    label: 'Nov 2026 — Present',
     delay: '1.1s',
     colorClass: 'b1',
     isCurrent: true,
@@ -32,8 +32,8 @@ export const GANTT_DATA: GanttItem[] = [
   {
     company: 'Khwaaish',
     leftPercent: 17.65,
-    widthPercent: 76.47,
-    label: 'Sep 2025 — Sep 2026 · 1 yr 1 mo',
+    widthPercent: 58.82,
+    label: 'Sep 2025 — Jul 2026 · 11 mos',
     delay: '0.7s',
     colorClass: 'b2',
   },
@@ -59,7 +59,7 @@ export const EXPERIENCES: ExperienceRole[] = [
       c2: '#2f5a50',
     },
     role: 'Technical Team Lead',
-    meta: 'Full-time · Oct 2026 — Present · Mumbai, Remote',
+    meta: 'Full-time · Nov 2026 — Present · Mumbai, Remote',
     bullets: [
       'Architected an <mark>AI-powered document-to-output backend</mark>.',
       'Combined <mark>LLM extraction with deterministic, auditable decision rules</mark> for reliable results.'
@@ -70,14 +70,14 @@ export const EXPERIENCES: ExperienceRole[] = [
     company: 'Khwaaish',
     initial: 'K',
     logoUrl: '/logos/khwaaish.png',
-    badge: '1 yr 1 mo',
+    badge: '11 mos',
     isCurrent: false,
     colors: {
       c1: '#ef4444',
       c2: '#f97316',
     },
     role: 'Tech Lead — AI Engineer (Founding Team)',
-    meta: 'Full-time · Sep 2025 — Sep 2026 · Mumbai, Hybrid',
+    meta: 'Full-time · Sep 2025 — Jul 2026 · Mumbai, Hybrid',
     bullets: [
       'Contributed to the founding team, building an <mark>AI-driven platform that simplifies ordering and booking</mark>.',
       'Owned end-to-end engineering and delivered <mark>two production-ready products</mark>, with scalable backends and AI-driven automation workflows.',

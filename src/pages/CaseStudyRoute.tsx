@@ -1,24 +1,23 @@
-import { useParams } from 'react-router-dom';
-import { getCaseStudyById } from '../data/projects';
-import { CaseStudyPage } from '../features/case-studies/CaseStudyPage';
+import { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { CASES } from '../data/cases';
 import { NotFoundPage } from './NotFoundPage';
 
 export function CaseStudyRoute() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
-  if (!id) {
+  const caseItem = id ? CASES[id.toLowerCase()] : null;
+
+  useEffect(() => {
+    if (caseItem && id) {
+      navigate(`/#case-${id.toLowerCase()}`, { replace: true });
+    }
+  }, [caseItem, id, navigate]);
+
+  if (!caseItem) {
     return <NotFoundPage />;
   }
 
-  const caseStudy = getCaseStudyById(id.toLowerCase());
-
-  if (!caseStudy) {
-    return <NotFoundPage />;
-  }
-
-  return (
-    <main id="case" style={{ display: 'block' }}>
-      <CaseStudyPage caseStudy={caseStudy} />
-    </main>
-  );
+  return null;
 }

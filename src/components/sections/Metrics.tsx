@@ -1,41 +1,36 @@
 import { useEffect, useRef, useState } from 'react';
-import { METRICS } from '../../data/metrics';
-import { prefersReducedMotion } from '../../lib/utils';
-import { Eyebrow } from '../ui/Badge';
+
+const METRICS_DATA = [
+  { target: 2, label: 'Production-ready products delivered as tech lead', sc: 1 },
+  { target: 10, label: 'Services in the VERO2026 payments platform', sc: -1 },
+  { target: 4, label: 'Client surfaces on one agent backend (Mads)', sc: 1 },
+  { target: 7, label: 'Case studies and field notes written', sc: -1 },
+];
 
 export function Metrics() {
-  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [counts, setCounts] = useState([0, 0, 0, 0]);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const [counts, setCounts] = useState<number[]>(() =>
-    prefersReducedMotion() ? METRICS.map((m) => m.number) : METRICS.map(() => 0)
-  );
 
   useEffect(() => {
-    if (prefersReducedMotion() || hasAnimated) return;
+    const el = containerRef.current;
+    if (!el) return;
 
-    const observer = new IntersectionObserver(
+    const io = new IntersectionObserver(
       (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
+        if (entries[0]?.isIntersecting && !hasAnimated) {
           setHasAnimated(true);
+          const t0 = performance.now();
+          const dur = 1600;
 
-          const startTime = performance.now();
-          const duration = 1400;
-
-          const animate = (time: number) => {
-            const elapsed = time - startTime;
-            const progress = Math.min(1, Math.max(0, elapsed / duration));
-            // easeOutCubic
-            const ease = 1 - Math.pow(1 - progress, 3);
-
-            setCounts(
-              METRICS.map((m) => Math.round(m.number * ease))
-            );
-
-            if (progress < 1) {
+          function animate(t: number) {
+            const k = Math.min(1, Math.max(0, (t - t0) / dur));
+            const ease = 1 - Math.pow(1 - k, 3);
+            setCounts(METRICS_DATA.map((m) => Math.round(m.target * ease)));
+            if (k < 1) {
               requestAnimationFrame(animate);
             }
-          };
+          }
 
           requestAnimationFrame(animate);
         }
@@ -43,32 +38,51 @@ export function Metrics() {
       { threshold: 0.2 }
     );
 
-    const el = sectionRef.current;
-    if (el) observer.observe(el);
-
-    return () => {
-      if (el) observer.unobserve(el);
-    };
+    io.observe(el);
+    return () => io.disconnect();
   }, [hasAnimated]);
 
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const cards = el.querySelectorAll<HTMLElement>('.metric');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+
+    const onScroll = () => {
+      const vh = window.innerHeight;
+      cards.forEach((card) => {
+        const r = card.getBoundingClientRect();
+        const c = (r.top + r.height / 2 - vh / 2) / vh;
+        const k = Math.min(1, Math.max(-1, c));
+        const d = parseFloat(card.dataset.sc || '1');
+        const opacity = Math.min(1, Math.max(0, 1 - Math.min(0.7, Math.max(0, Math.abs(c) - 0.3)) * 1.5));
+        card.style.opacity = opacity.toString();
+        card.style.transform = `perspective(1200px) rotateX(${k * 16}deg) rotateY(${-k * 12 * d}deg) translateZ(${-Math.abs(k) * 100}px)`;
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
-    <section className="page active" id="numbers" ref={sectionRef}>
+    <section className="nums">
       <div className="wrap">
-        <div className="pg">
-          <Eyebrow className="it">By the numbers</Eyebrow>
-
-          <h2 className="grad it">
-            Shipped, <mark>not just designed</mark>.
-          </h2>
-
-          <div className="metrics it">
-            {METRICS.map((metric, idx) => (
-              <div key={idx} className="metric">
-                <b>{counts[idx]}</b>
-                <span>{metric.description}</span>
-              </div>
-            ))}
-          </div>
+        <span className="eb rv in" data-scr>
+          by the numbers
+        </span>
+        <h2 className="h2 sw">
+          Shipped, <mark>not just designed</mark>.
+        </h2>
+        <div className="metrics" ref={containerRef}>
+          {METRICS_DATA.map((m, idx) => (
+            <div className="metric" data-sc={m.sc} key={idx}>
+              <b>{counts[idx]}</b>
+              <span>{m.label}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
